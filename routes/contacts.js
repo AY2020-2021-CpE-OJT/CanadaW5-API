@@ -28,12 +28,12 @@ router.post('/', async (req, res) => {
     }
 });
 //Delete a Contact
-router.delete('/', async (req, res) =>{
+router.delete('/delete/:id', async (req, res) =>{
    const deleteContact = await Contact.findByIdAndDelete({_id: req.params.id});
    res.json(deleteContact); 
 });
 //Update a Contact
-router.patch('/', async (req, res) => {
+router.patch('/update/:id', async (req, res) => {
     const patchContact = await Contact.updateOne({_id: req.params.id}, {$set: req.body});
     res.json(patchContact);
 });
