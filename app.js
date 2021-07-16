@@ -24,13 +24,13 @@ app.post('/api/login', (req, res) => {
     //Guest User
     const user = {
         id: 1,
-        username = 'guest',
+        username : 'guest',
         email: 'guest@gmail.com'
     }
 
-   jwt.sign({user:user}, 'secretkeyguest', (err, token) =>{
+   jwt.sign({user: user}, 'secretkey', (err, token) =>{
         res.json({
-            token:token
+            token: token
         });
     });
 });
