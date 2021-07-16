@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const mongoConfig = require('./mongoConfig');
+const jwt = require('jsonwebtoken');
 
 //body-parser and cors
 app.use(bodyParser.json());
@@ -18,9 +19,21 @@ app.get('/', (req,res) => {
 app.get('/Week04', (req,res) => {
     res.send('This is to prompt that I have integrated my API to Heroku and that my application is able to execute the requirements! Thanks for viewing this page :)');
 })
-app.get('/dashboard', (req, res) => {
-    res.send('Dashboard');
-})
+
+app.post('/api/login', (req, res) => {
+    //Guest User
+    const user = {
+        id: 1,
+        username = 'guest',
+        email: 'guest@gmail.com'
+    }
+
+    jwt.sign({user}, 'secretkeyguest', (err, token) =>{
+        res.json({
+            token
+        });
+    })
+});
 
 //connect to mongoDB
 mongoose.connect(mongoConfig.MONGO_URI, {
