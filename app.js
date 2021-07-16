@@ -19,6 +19,15 @@ app.get('/', (req,res) => {
 app.get('/Week04', (req,res) => {
     res.send('This is to prompt that I have integrated my API to Heroku and that my application is able to execute the requirements! Thanks for viewing this page :)');
 })
+app.get('/Week05', verifyToken,(req,res) => {
+    jwt.verify(req.token, 'secretkey', (err, authData) => {
+        if(err){
+            res.sendStatus(403);
+        }else {
+            res.json({message: 'Authorized to enter', authData});
+        }
+    });
+})
 
 app.post('/api/login', (req, res) => {
     //Guest User
@@ -34,6 +43,29 @@ app.post('/api/login', (req, res) => {
         });
     });
 });
+
+// FORMAT OF TOKEN
+// AUTHORIZATION: Bearer <access_token>
+
+//Verify Token
+function verifyToken(req, res, next) {
+    // Get auth header value
+    const bearerHeader = req.headers['authorization'];
+    // Check if bearer is undefined
+    if(typeof bearerHeader !== 'undefined'){
+        // Split at the space
+        const bearer = bearerHeader.split(' ');
+        // Get token from array
+        const bearerToken = bearer[1];
+        // Set the token
+        req.token = bearerToken;
+        // Call next middleware
+        next();
+    }else {
+        //Forbidden
+        res.sendStatus(403);
+    }
+}
 
 //connect to mongoDB
 mongoose.connect(mongoConfig.MONGO_URI, {
