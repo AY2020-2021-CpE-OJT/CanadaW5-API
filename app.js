@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const mongoConfig = require('./mongoConfig');
 const jwt = require('jsonwebtoken');
+const verifyToken = require('./routes/contacts');
 
 //body-parser and cors
 app.use(bodyParser.json());
@@ -43,29 +44,6 @@ app.post('/api/login', (req, res) => {
         });
     });
 });
-
-// FORMAT OF TOKEN
-// AUTHORIZATION: Bearer <access_token>
-
-//Verify Token
-function verifyToken(req, res, next) {
-    // Get auth header value
-    const bearerHeader = req.headers['authorization'];
-    // Check if bearer is undefined
-    if(typeof bearerHeader !== 'undefined'){
-        // Split at the space
-        const bearer = bearerHeader.split(' ');
-        // Get token from array
-        const bearerToken = bearer[1];
-        // Set the token
-        req.token = bearerToken;
-        // Call next middleware
-        next();
-    }else {
-        //Forbidden
-        res.sendStatus(403);
-    }
-}
 
 //connect to mongoDB
 mongoose.connect(mongoConfig.MONGO_URI, {

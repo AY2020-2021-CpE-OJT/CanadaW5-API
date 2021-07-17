@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Contact = require('../models/contact');
+const jwt = require('jsonwebtoken');
 
 //CRUD
 //Get all
@@ -37,5 +38,29 @@ router.patch('/update/:id', async (req, res) => {
     const patchContact = await Contact.updateOne({_id: req.params.id}, {$set: req.body});
     res.json(patchContact);
 });
+
+// Authentication and Authorization
+// FORMAT OF TOKEN
+// AUTHORIZATION: Bearer <access_token>
+
+//Verify Token
+function verifyToken(req, res, next) {
+    // Get auth header value
+    const bearerHeader = req.headers['authorization'];
+    // Check if bearer is undefined
+    if(typeof bearerHeader !== 'undefined'){
+        // Split at the space
+        const bearer = bearerHeader.split(' ');
+        // Get token from array
+        const bearerToken = bearer[1];
+        // Set the token
+        req.token = bearerToken;
+        // Call next middleware
+        next();
+    }else {
+        //Forbidden
+        res.sendStatus(403);
+    }
+}
 
 module.exports = router;
