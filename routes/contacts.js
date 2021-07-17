@@ -19,7 +19,14 @@ router.get('/', verifyToken, async (req, res) => {
 //Get specific
 router.get('/find/:id', async (req, res) => {
     const c = await Contact.findById({_id: req.params.id});
-    res.json(c);
+    jwt.verify(req.token, 'secretkey', (err, authData) => {
+        if(err){
+            res.sendStatus(403);
+        }else {
+            //res.json({message: 'Authorized to enter', authData});
+            res.json(c);
+        }
+    });
 });
 //POST a Contact
 router.post('/', verifyToken, async (req, res) => {
@@ -57,7 +64,14 @@ router.delete('/delete/:id', verifyToken, async (req, res) =>{
 //Update a Contact
 router.patch('/update/:id', async (req, res) => {
     const patchContact = await Contact.updateOne({_id: req.params.id}, {$set: req.body});
-    res.json(patchContact);
+    jwt.verify(req.token, 'secretkey', (err, authData) => {
+        if(err){
+            res.sendStatus(403);
+        }else {
+            //res.json({message: 'Authorized to enter', authData});
+            res.json(patchContact);
+        }
+    });
 });
 
 // new
