@@ -6,13 +6,12 @@ const jwt = require('jsonwebtoken');
 //CRUD
 //Get all
 router.get('/', verifyToken, async (req, res) => {
-
+    const contacts = await Contact.find();
     jwt.verify(req.token, 'secretkey', (err, authData) => {
         if(err){
             res.sendStatus(403);
         }else {
             //res.json({message: 'Authorized to enter', authData});
-            const contacts = await Contact.find();
             res.json(contacts);
         }
     });
