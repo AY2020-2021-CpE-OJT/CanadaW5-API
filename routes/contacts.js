@@ -39,6 +39,8 @@ router.patch('/update/:id', async (req, res) => {
     res.json(patchContact);
 });
 
+// Authentication and Authorization
+
 app.post('/api/login', (req, res) => {
     //Guest User
     const user = {
@@ -54,7 +56,16 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-// Authentication and Authorization
+
+app.get('/Week05', verifyToken,(req,res) => {
+    jwt.verify(req.token, 'secretkey', (err, authData) => {
+        if(err){
+            res.sendStatus(403);
+        }else {
+            res.json({message: 'Authorized to enter', authData});
+        }
+    });
+})
 // FORMAT OF TOKEN
 // AUTHORIZATION: Bearer <access_token>
 
