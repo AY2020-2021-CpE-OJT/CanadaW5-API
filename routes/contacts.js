@@ -5,9 +5,16 @@ const jwt = require('jsonwebtoken');
 
 //CRUD
 //Get all
-router.get('/', async (req, res) => {
+router.get('/', verifyToken, async (req, res) => {
     const contacts = await Contact.find();
-    res.json(contacts);
+    jwt.verify(req.token, 'secretkey', (err, authData) => {
+        if(err){
+            res.sendStatus(403);
+        }else {
+            //res.json({message: 'Authorized to enter', authData});
+            res.json(contacts);
+        }
+    });
 });
 //Get specific
 router.get('/find/:id', async (req, res) => {
@@ -15,18 +22,25 @@ router.get('/find/:id', async (req, res) => {
     res.json(c);
 });
 //POST a Contact
-router.post('/', async (req, res) => {
+router.post('/', verifyToken, async (req, res) => {
     const newContact = new Contact({
         last_name: req.body.last_name,
         first_name: req.body.first_name,
         phone_numbers: req.body.phone_numbers
     })
-    try{
-        const savedContact = await newContact.save();
-        res.json(savedContact);
-    }catch(err){
-        res.json({message: err});
-    }
+    const savedContact = await newContact.save();
+    jwt.verify(req.token, 'secretkey', (err, authData) => {
+        if(err){
+            res.sendStatus(403);
+        }else {
+            //res.json({message: 'Authorized to enter', authData});
+            try{
+                res.json(savedContact);
+            }catch(err){
+                res.json({message: err});
+            }
+        }
+    });
 });
 //Delete a Contact
 router.delete('/delete/:id', async (req, res) =>{
@@ -87,10 +101,5 @@ function verifyToken(req, res, next) {
         res.sendStatus(403);
     }
 }
-
-
-
-
-
 
 module.exports = router;
