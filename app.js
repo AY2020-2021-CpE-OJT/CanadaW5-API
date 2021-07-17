@@ -30,21 +30,6 @@ app.get('/Week05', verifyToken,(req,res) => {
     });
 })
 
-app.post('/api/login', (req, res) => {
-    //Guest User
-    const user = {
-        id: 1,
-        username : 'guest',
-        email: 'guest@gmail.com'
-    }
-
-   jwt.sign({user: user}, 'secretkey', (err, token) =>{
-        res.json({
-            token: token
-        });
-    });
-});
-
 //connect to mongoDB
 mongoose.connect(mongoConfig.MONGO_URI, {
             useNewUrlParser: true,
