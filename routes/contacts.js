@@ -40,7 +40,7 @@ router.patch('/update/:id', async (req, res) => {
 });
 
 // new
-app.get('/Week05test', verifyToken,(req,res) => {
+router.get('/Week05test', verifyToken,(req,res) => {
     jwt.verify(req.token, 'secretkey', (err, authData) => {
         if(err){
             res.sendStatus(403);
@@ -50,7 +50,7 @@ app.get('/Week05test', verifyToken,(req,res) => {
     });
 })
 
-app.post('/api/guest', (req, res) => {
+router.post('/api/guest', (req, res) => {
     //Guest User
     const user = {
         id: 1,
