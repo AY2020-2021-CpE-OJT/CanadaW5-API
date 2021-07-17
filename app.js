@@ -33,8 +33,8 @@ app.post('/api/login', (req, res) => {
     //Guest User
     const user = {
         id: 1,
-        username : 'guest',
-        email: 'guest@gmail.com'
+        username : 'peter',
+        email: 'peter@gmail.com'
     }
 
    jwt.sign({user: user}, 'secretkey', (err, token) =>{
