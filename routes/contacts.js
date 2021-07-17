@@ -17,7 +17,7 @@ router.get('/', verifyToken, async (req, res) => {
     });
 });
 //Get specific
-router.get('/find/:id', async (req, res) => {
+router.get('/find/:id', verifyToken ,async (req, res) => {
     const c = await Contact.findById({_id: req.params.id});
     jwt.verify(req.token, 'secretkey', (err, authData) => {
         if(err){
@@ -62,7 +62,7 @@ router.delete('/delete/:id', verifyToken, async (req, res) =>{
     });
 });
 //Update a Contact
-router.patch('/update/:id', async (req, res) => {
+router.patch('/update/:id', verifyToken, async (req, res) => {
     const patchContact = await Contact.updateOne({_id: req.params.id}, {$set: req.body});
     jwt.verify(req.token, 'secretkey', (err, authData) => {
         if(err){
