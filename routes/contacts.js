@@ -43,9 +43,16 @@ router.post('/', verifyToken, async (req, res) => {
     });
 });
 //Delete a Contact
-router.delete('/delete/:id', async (req, res) =>{
+router.delete('/delete/:id', verifyToken, async (req, res) =>{
    const deleteContact = await Contact.findByIdAndDelete({_id: req.params.id});
-   res.json(deleteContact); 
+   jwt.verify(req.token, 'secretkey', (err, authData) => {
+        if(err){
+           res.sendStatus(403);
+         }else {
+         //res.json({message: 'Authorized to enter', authData});
+           res.json(deleteContact); 
+    }
+    });
 });
 //Update a Contact
 router.patch('/update/:id', async (req, res) => {
@@ -71,7 +78,6 @@ router.post('/api/guest', (req, res) => {
         username : 'guest',
         email: 'guest@gmail.com'
     }
-
    jwt.sign({user: user}, 'secretkey', (err, token) =>{
         res.json({
             token: token
