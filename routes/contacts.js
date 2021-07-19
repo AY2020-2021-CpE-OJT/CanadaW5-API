@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 //Get all
 router.get('/', verifyToken, async (req, res) => {
     const contacts = await Contact.find();
-    jwt.verify(req.token, 'secretkey', (err, authData) => {
+    jwt.verify(req.token, 'SecretGuestKey', (err, authData) => {
         if(err){
             res.sendStatus(403);
         }else {
@@ -18,7 +18,7 @@ router.get('/', verifyToken, async (req, res) => {
 //Get specific
 router.get('/find/:id', verifyToken ,async (req, res) => {
     const c = await Contact.findById({_id: req.params.id});
-    jwt.verify(req.token, 'secretkey', (err, authData) => {
+    jwt.verify(req.token, 'SecretGuestKey', (err, authData) => {
         if(err){
             res.sendStatus(403);
         }else {
@@ -34,7 +34,7 @@ router.post('/', verifyToken, async (req, res) => {
         phone_numbers: req.body.phone_numbers
     })
     const savedContact = await newContact.save();
-    jwt.verify(req.token, 'secretkey', (err, authData) => {
+    jwt.verify(req.token, 'SecretGuestKey', (err, authData) => {
         if(err){
             res.sendStatus(403);
         }else {
@@ -49,7 +49,7 @@ router.post('/', verifyToken, async (req, res) => {
 //Delete a Contact
 router.delete('/delete/:id', verifyToken, async (req, res) =>{
    const deleteContact = await Contact.findByIdAndDelete({_id: req.params.id});
-   jwt.verify(req.token, 'secretkey', (err, authData) => {
+   jwt.verify(req.token, 'SecretGuestKey', (err, authData) => {
         if(err){
            res.sendStatus(403);
          }else {
@@ -60,7 +60,7 @@ router.delete('/delete/:id', verifyToken, async (req, res) =>{
 //Update a Contact
 router.patch('/update/:id', verifyToken, async (req, res) => {
     const patchContact = await Contact.updateOne({_id: req.params.id}, {$set: req.body});
-    jwt.verify(req.token, 'secretkey', (err, authData) => {
+    jwt.verify(req.token, 'SecretGuestKey', (err, authData) => {
         if(err){
             res.sendStatus(403);
         }else {
@@ -72,7 +72,7 @@ router.patch('/update/:id', verifyToken, async (req, res) => {
 
 // new
 router.get('/Week05test', verifyToken,(req,res) => {
-    jwt.verify(req.token, 'secretkey', (err, authData) => {
+    jwt.verify(req.token, 'SecretGuestKey', (err, authData) => {
         if(err){
             res.sendStatus(403);
         }else {
@@ -88,7 +88,7 @@ router.post('/api/guest', (req, res) => {
         username : 'guest',
         email: 'guest@gmail.com'
     }
-   jwt.sign({user: guestUser}, 'secretkey', (err, token) =>{
+   jwt.sign({user: guestUser}, 'SecretGuestKey', (err, token) =>{
         res.json({
             token: token
         });
