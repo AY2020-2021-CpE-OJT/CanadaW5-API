@@ -11,7 +11,6 @@ router.get('/', verifyToken, async (req, res) => {
         if(err){
             res.sendStatus(403);
         }else {
-            //res.json({message: 'Authorized to enter', authData});
             res.json(contacts);
         }
     });
@@ -23,7 +22,6 @@ router.get('/find/:id', verifyToken ,async (req, res) => {
         if(err){
             res.sendStatus(403);
         }else {
-            //res.json({message: 'Authorized to enter', authData});
             res.json(c);
         }
     });
@@ -40,7 +38,6 @@ router.post('/', verifyToken, async (req, res) => {
         if(err){
             res.sendStatus(403);
         }else {
-            //res.json({message: 'Authorized to enter', authData});
             try{
                 res.json(savedContact);
             }catch(err){
@@ -56,7 +53,6 @@ router.delete('/delete/:id', verifyToken, async (req, res) =>{
         if(err){
            res.sendStatus(403);
          }else {
-         //res.json({message: 'Authorized to enter', authData});
            res.json(deleteContact); 
     }
     });
@@ -86,13 +82,13 @@ router.get('/Week05test', verifyToken,(req,res) => {
 })
 
 router.post('/api/guest', (req, res) => {
-    //Guest User
-    const user = {
+    //Guest Exclusive Guest User
+    const guestUser = {
         id: 1,
         username : 'guest',
         email: 'guest@gmail.com'
     }
-   jwt.sign({user: user}, 'secretkey', (err, token) =>{
+   jwt.sign({user: guestUser}, 'secretkey', (err, token) =>{
         res.json({
             token: token
         });
